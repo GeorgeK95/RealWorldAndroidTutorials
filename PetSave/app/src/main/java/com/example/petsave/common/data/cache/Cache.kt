@@ -6,6 +6,6 @@ import io.reactivex.Flowable
 
 interface Cache {
     fun getNearbyAnimals(): Flowable<List<CachedAnimalAggregate>>
-    fun storeOrganizations(organizations: List<CachedOrganization>)
+    suspend fun storeOrganizations(organizations: List<CachedOrganization>)
     suspend fun storeNearbyAnimals(animals: List<CachedAnimalAggregate>)
 }

@@ -9,12 +9,12 @@ import com.example.petsave.common.data.cache.model.cachedorganization.CachedOrga
 
 @Database(
     entities = [
+        CachedPhoto::class,
         CachedVideo::class,
         CachedTag::class,
         CachedAnimalWithDetails::class,
         CachedOrganization::class,
-        CachedAnimalTagCrossRef::class,
-        CachedPhoto::class
+        CachedAnimalTagCrossRef::class
     ],
     version = 1
 )

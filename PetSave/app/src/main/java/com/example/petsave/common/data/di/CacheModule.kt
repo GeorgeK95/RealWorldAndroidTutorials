@@ -20,7 +20,7 @@ import javax.inject.Singleton
 abstract class CacheModule {
 
     @Binds
-    abstract fun bindCache(cache: Cache): Cache
+    abstract fun bindCache(cache: RoomCache): Cache
 
     companion object {
 

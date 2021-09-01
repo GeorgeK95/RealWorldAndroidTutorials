@@ -6,11 +6,13 @@ import com.example.petsave.common.data.api.model.mappers.ApiPaginationMapper
 import com.example.petsave.common.data.cache.Cache
 import com.example.petsave.common.data.cache.model.cachedanimal.CachedAnimalAggregate
 import com.example.petsave.common.data.cache.model.cachedorganization.CachedOrganization
+import com.example.petsave.common.domain.model.NetworkException
 import com.example.petsave.common.domain.model.animal.Animal
 import com.example.petsave.common.domain.model.animal.details.AnimalWithDetails
 import com.example.petsave.common.domain.model.pagination.PaginatedAnimals
 import com.example.petsave.common.domain.repositories.AnimalRepository
 import io.reactivex.Flowable
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class PetFinderAnimalRepository @Inject constructor(
@@ -31,19 +33,23 @@ class PetFinderAnimalRepository @Inject constructor(
     }
 
     override suspend fun requestMoreAnimals(pageToLoad: Int, numberOfItems: Int): PaginatedAnimals {
-        val (apiAnimals, apiPagination) = api.getNearbyAnimals(
-            pageToLoad,
-            numberOfItems,
-            postcode,
-            maxDistanceMiles
-        )
+        try {
+            val (apiAnimals, apiPagination) = api.getNearbyAnimals(
+                pageToLoad,
+                numberOfItems,
+                postcode,
+                maxDistanceMiles
+            )
 
-        return PaginatedAnimals(
-            apiAnimals?.map {
-                apiAnimalMapper.mapToDomain(it)
-            }.orEmpty(),
-            apiPaginationMapper.mapToDomain(apiPagination)
-        )
+            return PaginatedAnimals(
+                apiAnimals?.map {
+                    apiAnimalMapper.mapToDomain(it)
+                }.orEmpty(),
+                apiPaginationMapper.mapToDomain(apiPagination)
+            )
+        } catch (exception: HttpException) {
+            throw NetworkException(exception.message ?: "Code ${exception.code()}")
+        }
     }
 
     override suspend fun storeAnimals(animals: List<AnimalWithDetails>) {

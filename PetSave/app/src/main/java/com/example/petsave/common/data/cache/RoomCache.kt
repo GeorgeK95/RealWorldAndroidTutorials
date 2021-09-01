@@ -18,7 +18,7 @@ class RoomCache @Inject constructor(
         animalsDao.insertAnimalsWithDetails(animals)
     }
 
-    override fun storeOrganizations(organizations: List<CachedOrganization>) {
+    override suspend fun storeOrganizations(organizations: List<CachedOrganization>) {
         organizationsDao.insert(organizations)
     }
 }
