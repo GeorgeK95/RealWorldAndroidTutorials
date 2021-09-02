@@ -8,9 +8,12 @@ import com.example.petsave.common.data.cache.model.cachedanimal.CachedAnimalAggr
 import com.example.petsave.common.data.cache.model.cachedorganization.CachedOrganization
 import com.example.petsave.common.domain.model.NetworkException
 import com.example.petsave.common.domain.model.animal.Animal
+import com.example.petsave.common.domain.model.animal.details.Age
 import com.example.petsave.common.domain.model.animal.details.AnimalWithDetails
 import com.example.petsave.common.domain.model.pagination.PaginatedAnimals
 import com.example.petsave.common.domain.repositories.AnimalRepository
+import com.example.petsave.search.domain.model.SearchParameters
+import com.example.petsave.search.domain.model.SearchResults
 import io.reactivex.Flowable
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -57,6 +60,52 @@ class PetFinderAnimalRepository @Inject constructor(
 
         cache.storeOrganizations(organizations)
         cache.storeNearbyAnimals(animals.map { CachedAnimalAggregate.fromDomain(it) })
+    }
+
+    override fun searchCachedAnimalsBy(parameters: SearchParameters): Flowable<SearchResults> {
+        val (name, age, type) = parameters
+
+        return cache.searchAnimalsBy(name, age, type)
+            .distinctUntilChanged()
+            .map { animalList ->
+                animalList.map {
+                    it.animal.toAnimalDomain(
+                        it.photos,
+                        it.videos,
+                        it.tags
+                    )
+                }
+            }
+            .map { SearchResults(it, parameters) }
+    }
+
+    override suspend fun searchAnimalsRemotely(
+        pageToLoad: Int,
+        searchParameters: SearchParameters,
+        numberOfItems: Int
+    ): PaginatedAnimals {
+        val (apiAnimals, apiPagination) = api.searchAnimalsBy(
+            searchParameters.name,
+            searchParameters.age,
+            searchParameters.type,
+            pageToLoad,
+            numberOfItems,
+            postcode,
+            maxDistanceMiles
+        )
+
+        return PaginatedAnimals(
+            apiAnimals?.map { apiAnimalMapper.mapToDomain(it) }.orEmpty(),
+            apiPaginationMapper.mapToDomain(apiPagination)
+        )
+    }
+
+    override fun getAnimalTypes(): List<String> {
+        return cache.getAllTypes()
+    }
+
+    override fun getAnimalAges(): List<Age> {
+        return Age.values().toList()
     }
 
     private val postcode = "07097"
