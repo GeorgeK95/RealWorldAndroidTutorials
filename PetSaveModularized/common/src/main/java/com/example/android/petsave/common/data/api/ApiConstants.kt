@@ -7,8 +7,8 @@ object ApiConstants {
     const val AUTH_ENDPOINT = "oauth2/token/"
     const val ANIMALS_ENDPOINT = "animals"
 
-    const val KEY = "INSERT_YOUR_KEY_HERE"
-    const val SECRET = "INSERT_YOUR_SECRET_HERE"
+    const val KEY = "rGfT4RNAhqLy8dVY5Ciu6kAkKDMxiDyusFS4BWV7Pe1uMZnzmt"
+    const val SECRET = "VejJEQ5r7hutExNUgZXukXB5moRSB5PvpsDgIoDL"
 }
 
 object ApiParameters {
