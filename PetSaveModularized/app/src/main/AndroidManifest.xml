@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.example.android.com.example.petsave.PetSaveApplication"
+        android:name=".PetSaveApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,7 +17,7 @@
 
         <!-- Main Activity -->
         <activity
-            android:name="com.example.android.com.example.petsave.main.presentation.MainActivity"
+            android:name=".main.presentation.MainActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

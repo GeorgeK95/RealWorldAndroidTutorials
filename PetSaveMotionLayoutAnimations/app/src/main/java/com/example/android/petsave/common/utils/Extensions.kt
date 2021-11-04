@@ -1,5 +1,8 @@
 package com.example.android.petsave.common.utils
 
+import android.content.Context
+import android.graphics.Paint
+import android.graphics.Rect
 import android.widget.ImageView
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
@@ -59,4 +62,12 @@ fun Boolean?.toEmoji() = if (this != null) {
     String(Character.toChars(if (this) CHECK_EMOJI else CROSS_EMOJI))
 } else {
     String(Character.toChars(QUESTION_EMOJI))
+}
+
+fun Context.dpToPx(dp: Float) = this.resources.displayMetrics.density * dp
+
+fun Paint.getTextWidth(string: String): Float {
+    val rect = Rect()
+    this.getTextBounds(string, 0, string.length, rect)
+    return rect.width().toFloat()
 }

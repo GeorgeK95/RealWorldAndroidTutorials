@@ -216,6 +216,16 @@
 
             </com.google.android.material.chip.ChipGroup>
 
+            <com.example.android.petsave.common.presentation.ProgressButton
+                android:id="@+id/adopt_button"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintTop_toBottomOf="@id/good_boi_label"
+                app:progressButton_text="@string/adopt" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

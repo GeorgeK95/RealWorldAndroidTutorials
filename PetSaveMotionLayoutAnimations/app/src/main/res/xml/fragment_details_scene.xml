@@ -73,7 +73,7 @@
     <Transition
         motion:constraintSetEnd="@+id/end"
         motion:constraintSetStart="@id/start"
-        motion:duration="1000"
+        motion:duration="3341"
         motion:motionInterpolator="linear">
         <KeyFrameSet>
             <KeyPosition

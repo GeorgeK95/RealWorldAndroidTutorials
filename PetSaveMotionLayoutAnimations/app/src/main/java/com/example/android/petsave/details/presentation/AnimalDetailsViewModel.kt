@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.android.petsave.common.domain.model.animal.details.AnimalWithDetails
 import com.example.android.petsave.common.presentation.model.mappers.UiAnimalDetailsMapper
 import com.example.android.petsave.details.domain.usecases.AnimalDetails
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -29,6 +30,7 @@ class AnimalDetailsViewModel @ViewModelInject constructor(
     fun handleEvent(event: AnimalDetailsEvent) {
         when (event) {
             is AnimalDetailsEvent.LoadAnimalDetails -> subscribeToAnimalDetails(event.animalId)
+            is AnimalDetailsEvent.AdoptAnimal -> adoptAnimal()
         }
     }
 
@@ -47,6 +49,18 @@ class AnimalDetailsViewModel @ViewModelInject constructor(
     private fun onAnimalsDetails(animal: AnimalWithDetails) {
         val animalDetails = uiAnimalDetailsMapper.mapToView(animal)
         _state.value = AnimalDetailsViewState.AnimalDetails(animalDetails)
+    }
+
+    private fun adoptAnimal() {
+        compositeDisposable.add(
+            Observable.timer(2L, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    _state.value =
+                        (_state.value as AnimalDetailsViewState.AnimalDetails?)?.copy(adopted = true)
+                }
+        )
     }
 
     private fun onFailure(failure: Throwable) {

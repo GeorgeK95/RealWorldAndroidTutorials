@@ -116,14 +116,14 @@ class AnimalDetailsFragment : Fragment() {
                     displayError()
                 }
                 is AnimalDetailsViewState.AnimalDetails -> {
-                    displayPetDetails(state.animal)
+                    displayPetDetails(state.animal, state.adopted)
                 }
             }
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun displayPetDetails(animalDetails: UIAnimalDetailed) {
+    private fun displayPetDetails(animalDetails: UIAnimalDetailed, adopted: Boolean) {
         binding.call.scaleX = 0.6f
         binding.call.scaleY = 0.6f
         binding.call.isVisible = true
@@ -176,6 +176,15 @@ class AnimalDetailsFragment : Fragment() {
                 val action = AnimalDetailsFragmentDirections.actionDetailsToSecret()
                 findNavController().navigate(action)
             }
+        }
+
+        binding.adoptButton.setOnClickListener {
+            binding.adoptButton.startLoading()
+            viewModel.handleEvent(AnimalDetailsEvent.AdoptAnimal)
+        }
+
+        if (adopted) {
+            binding.adoptButton.done()
         }
     }
 
