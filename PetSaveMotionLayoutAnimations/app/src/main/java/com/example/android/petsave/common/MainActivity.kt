@@ -1,7 +1,10 @@
 package com.example.android.petsave.common
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -38,6 +41,28 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.theme_options, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val themeMode = when (item.itemId) {
+            R.id.light_theme -> {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+            R.id.dark_theme -> {
+                AppCompatDelegate.MODE_NIGHT_YES
+            }
+            else -> {
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+        }
+        AppCompatDelegate.setDefaultNightMode(themeMode)
+        return true
     }
 
     private fun setupActionBar() {

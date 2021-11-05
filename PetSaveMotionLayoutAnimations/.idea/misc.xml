@@ -5,7 +5,9 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_close_24dp.xml" value="0.252" />
         <entry key="app/src/main/res/drawable/splash_background.xml" value="0.252" />
-        <entry key="app/src/main/res/layout/fragment_details.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_details.xml" value="1.2722915649414064" />
+        <entry key="app/src/main/res/layout/fragment_search.xml" value="0.24322916666666666" />
+        <entry key="app/src/main/res/menu/theme_options.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/xml/fragment_details_scene.xml" value="1.3042763157894737" />
       </map>
     </option>
