@@ -6,6 +6,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.util.Log
 import androidx.security.crypto.EncryptedFile
+import androidx.security.crypto.MasterKey
 import androidx.security.crypto.MasterKeys
 import java.io.File
 import java.security.KeyStore
@@ -67,15 +68,37 @@ class Encryption {
 
     @TargetApi(23)
     fun encryptFile(context: Context, file: File): EncryptedFile {
-      val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
-      val masterKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec)
+      val spec = KeyGenParameterSpec.Builder(
+        MasterKey.DEFAULT_MASTER_KEY_ALIAS,
+        KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+        .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+        .setKeySize(256)
+        .build()
+
+      val masterKey = MasterKey.Builder(context)
+        .setKeyGenParameterSpec(spec)
+        .build()
+
       return EncryptedFile.Builder(
-        file,
         context,
-        masterKeyAlias,
+        file,
+        masterKey,
         EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
       ).build()
     }
+
+//    @TargetApi(23)
+//    fun encryptFile(context: Context, file: File): EncryptedFile {
+//      val keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC
+//      val masterKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec)
+//      return EncryptedFile.Builder(
+//        file,
+//        context,
+//        masterKeyAlias,
+//        EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+//      ).build()
+//    }
 
     fun encrypt(
       dataToEncrypt: ByteArray,

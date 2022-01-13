@@ -52,7 +52,7 @@ class ApiModule {
 
     return OkHttpClient.Builder()
       .certificatePinner(certificatePinner)
-      .addInterceptor(ctInterceptor)
+      .addNetworkInterceptor(ctInterceptor)
       .addInterceptor(authenticationInterceptor)
       .addInterceptor(httpLoggingInterceptor)
       .cache(null)
